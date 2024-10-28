@@ -6,31 +6,41 @@
 /*   By: mgaudin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:57:39 by mgaudin           #+#    #+#             */
-/*   Updated: 2024/10/22 14:20:33 by mgaudin          ###   ########.fr       */
+/*   Updated: 2024/10/28 18:36:36 by mgaudin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
 #include "get_next_line.h"
 
-// int main(void)
-// {
-// 	int		fd;
-// 	size_t	read_bytes;
-// 	char	buffer[30];
+// 1 - loop and verify if \n
+// 2 - if there is : return the line nor NULL
+// 3 - if there is : delete all before \n
 
-// 	fd = open("test.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		return (-1);
-// 	read_bytes = read(fd, buffer, 5);
-// }
+char	*ft_verify_stash(char **pstash)
+{
+	size_t	i;
+	char	*line;
+
+	i = 0;
+	while (pstash[i])
+	{
+		line[i] = pstash[i];
+		if (line[i] == '\n')
+		{
+			**pstash = ft_memchr(pstash, '\n', ft_strlen(pstash));
+			return (line);
+		}
+		i++;
+	}
+	return (NULL);
+}
 
 char	*get_next_line(int fd)
 {
-	size_t	read_bytes;
-	char	buffer[1024];
+	size_t		read_bytes;
+	char		buffer[1024];
+	char		*line;
+	static char *stash;
 
 	if (fd < 0)
 		return (NULL);
@@ -39,8 +49,10 @@ char	*get_next_line(int fd)
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
 			return (NULL);
-		
+		if (!ft_strjoin(stash, buffer));
+			return (NULL);
+		line = ft_verify_stash(stash);
+		if (line)
+			return (line);
 	}
-	
-	
 }
