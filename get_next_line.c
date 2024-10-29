@@ -6,53 +6,54 @@
 /*   By: mgaudin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:57:39 by mgaudin           #+#    #+#             */
-/*   Updated: 2024/10/28 18:36:36 by mgaudin          ###   ########.fr       */
+/*   Updated: 2024/10/29 17:29:40 by mgaudin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-// 1 - loop and verify if \n
-// 2 - if there is : return the line nor NULL
-// 3 - if there is : delete all before \n
+void	ft_fill_line() {}
 
-char	*ft_verify_stash(char **pstash)
+void	ft_clean_stash() {}
+
+/* 
+	Fills the stash with the entire file text at the first call of get_next_line
+	Doesn't do anything to the stash after the first call
+*/
+
+void	ft_fill_stash(char **pstash, int fd) 
 {
-	size_t	i;
-	char	*line;
+	char	*buffer;
+	int		read_bytes;
 
-	i = 0;
-	while (pstash[i])
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer[BUFFER_SIZE] = '\0';
+	read_bytes = read(fd, buffer, BUFFER_SIZE);
+	printf("%d", read_bytes);
+	while (read_bytes > 0)
 	{
-		line[i] = pstash[i];
-		if (line[i] == '\n')
-		{
-			**pstash = ft_memchr(pstash, '\n', ft_strlen(pstash));
-			return (line);
-		}
-		i++;
+		printf("%d", read_bytes);
+		*pstash = ft_strjoin(*pstash, buffer);
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
 	}
-	return (NULL);
+	free(buffer);
 }
 
 char	*get_next_line(int fd)
 {
-	size_t		read_bytes;
-	char		buffer[1024];
-	char		*line;
 	static char *stash;
 
-	if (fd < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	while (read_bytes > 0)
-	{
-		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
-			return (NULL);
-		if (!ft_strjoin(stash, buffer));
-			return (NULL);
-		line = ft_verify_stash(stash);
-		if (line)
-			return (line);
-	}
+
+	stash = "";
+
+	ft_fill_stash(&stash, fd);
+	return (NULL);
+}
+
+int main(void)
+{
+	int fd = open("test.txt", O_RDONLY);
 }
