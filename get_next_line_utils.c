@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgaudin <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mgaudin <mgaudin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:57:42 by mgaudin           #+#    #+#             */
-/*   Updated: 2024/10/29 16:02:09 by mgaudin          ###   ########.fr       */
+/*   Updated: 2024/10/29 20:03:50 by mgaudin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,22 @@ char	*ft_strchr(const char *s, int c)
 	if (*s == (unsigned char)c)
 		return ((char *)s);
 	return (NULL);
+}
+
+char    *ft_strdup(const char *s)
+{
+        size_t  i;
+        char    *ps;
+
+        ps = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+        if (!ps)
+                return (ps);
+        i = 0;
+        while (s[i])
+        {
+                ps[i] = s[i];
+                i++;
+        }
+        ps[i] = 0;
+        return (ps);
 }
