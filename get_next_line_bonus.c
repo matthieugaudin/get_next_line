@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgaudin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:57:39 by mgaudin           #+#    #+#             */
-/*   Updated: 2024/11/04 14:55:23 by mgaudin          ###   ########.fr       */
+/*   Updated: 2024/11/04 15:01:15 by mgaudin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_update_line(char *line)
 {
@@ -82,7 +82,7 @@ char	*ft_fill_stash(int fd, char **pstash, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*line;
 	char		*buffer;
 
@@ -91,17 +91,17 @@ char	*get_next_line(int fd)
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	line = ft_fill_stash(fd, &stash, buffer);
+	line = ft_fill_stash(fd, &stash[fd], buffer);
 	free(buffer);
 	buffer = NULL;
-	if (!line || *stash == '\0')
+	if (!line || *stash[fd] == '\0')
 	{
-		free(stash);
-		stash = NULL;
+		free(stash[fd]);
+		stash[fd] = NULL;
 		return (NULL);
 	}
-	stash = ft_clean_stash(stash);
-	if (!stash)
+	stash[fd] = ft_clean_stash(stash[fd]);
+	if (!stash[fd])
 		return (NULL);
 	line = ft_update_line(line);
 	return (line);
